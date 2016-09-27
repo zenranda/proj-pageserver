@@ -79,11 +79,16 @@ def respond(sock):
     request = sock.recv(1024)  # We accept only short requests
     request = str(request, encoding='utf-8', errors='strict')
     print("\nRequest was {}\n".format(request))
-
     parts = request.split()
+    transmit(parts[0], sock)
+    transmit(parts[1], sock)
+
     if len(parts) > 1 and parts[0] == "GET":
-        transmit(STATUS_OK, sock)
-        transmit(CAT, sock)
+        if "//" in parts[1]:
+            transmit(STATUS_FORBIDDEN, sock)
+        else:
+            transmit(STATUS_OK, sock)
+            transmit(CAT, sock)
     else:
         transmit(STATUS_NOT_IMPLEMENTED, sock)        
         transmit("\nI don't handle this request: {}\n".format(request), sock)
@@ -129,4 +134,3 @@ def main():
     serve(sock, respond)
 
 main()
-    
