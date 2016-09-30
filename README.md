@@ -8,11 +8,11 @@ All three have very basic functionality and serve as sample pages.
 
 ### USAGE ###
 
-Run the program, then enter 
+Execute pageserver.py, then enter 
 ```
 localhost:PORT/pages/FILE
 ```
-into a web browser. Only serves .html and .css files.
+into a web browser.
 
 Can be run via automated configure and makefile scripts as well:
 
