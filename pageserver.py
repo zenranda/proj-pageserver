@@ -81,7 +81,7 @@ def respond(sock):
 
         path = parts[1]                                       #our page's path
   
-        if any(x in path for x in ['~','..','//']):          #if URL contains banned characters
+        if any(x in path for x in ['~','..','//']):           #if the URL contains banned characters
             transmit((STATUS_FORBIDDEN), sock)
         
         elif not any(x in path for x in ['.css','.html']):    #if the wrong kind of file is requested
@@ -91,7 +91,7 @@ def respond(sock):
             print('.\\pages/' + path[1:])
             transmit((STATUS_NOT_FOUND), sock)
         
-        else:
+        else:                                                 #if the URL is legitimate
             with open('.\\pages/' + path[1:], 'r') as body:
                 main = body.read()
             transmit(main, sock)
