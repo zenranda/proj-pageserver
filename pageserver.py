@@ -1,22 +1,25 @@
 """
-  A trivial web server in Python. 
+  CS322 Project 1
+  Author: Marc Leppold
+  A trivial web server in Python. Adapted from starter code.
 
   Based largely on https://docs.python.org/3.4/howto/sockets.html
   This trivial implementation is not robust:  We have omitted decent
   error handling and many other things to keep the illustration as simple
-  as possible. 
+  as possible.
+  
+  Contains 3 pages - home.html, trivia.html and colors.html.
+  All three are barebones  but contain unique .css.
+  
+  Usage: Request <ip address>/pages/FILE [html or css only]
 
-  FIXME:
-  Currently this program always serves an ascii graphic of a cat.
-  Change it to serve files if they end with .html or .css, and are
-  located in ./pages  (where '.' is the directory from which this
-  program is run).  
 """
 
-import CONFIG    # Configuration options. Create by editing CONFIG.base.py
+#import CONFIG    # Configuration options. Create by editing CONFIG.base.py
 import argparse  # Command line options (may override some configuration options)
 import socket    # Basic TCP/IP communication on the internet
 import _thread   # Response computation runs concurrently with main program 
+import os        # Needed for directory scanning.
 
 def listen(portnum):
     """
@@ -52,15 +55,6 @@ def serve(sock, func):
         _thread.start_new_thread(func, (clientsocket,))
 
 
-##
-## Starter version only serves cat pictures. In fact, only a
-## particular cat picture.  This one.
-##
-CAT = """
-     ^ ^
-   =(   )=
-"""
-
 ## HTTP response codes, as the strings we will actually send. 
 ##   See:  https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 ##   or    http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
@@ -73,28 +67,40 @@ STATUS_NOT_IMPLEMENTED = "HTTP/1.0 401 Not Implemented\n\n"
 def respond(sock):
     """
     This server responds only to GET requests (not PUT, POST, or UPDATE).
-    Any valid GET request is answered with an ascii graphic of a cat. 
+    Any valid GET request is answered with the appropriate file. 
+    A 403 or 404 error message will be issued if the request is invalid or tries to access forbidden areas.
     """
-    sent = 0
     request = sock.recv(1024)  # We accept only short requests
     request = str(request, encoding='utf-8', errors='strict')
     print("\nRequest was {}\n".format(request))
-    parts = request.split()
-    transmit(parts[0], sock)
-    transmit(parts[1], sock)
 
+    parts = request.split()
+    
     if len(parts) > 1 and parts[0] == "GET":
-        if "//" in parts[1]:
-            transmit(STATUS_FORBIDDEN, sock)
+        transmit(STATUS_OK, sock)
+
+        path = parts[1]                                       #our page's path
+  
+        if any(x in path for x in ['~','..','//',]):         #if URL doesn't contain banned characters
+            transmit((STATUS_FORBIDDEN), sock)
+        
+        elif not any(x in path for x in ['.css','.html']):   #if URL is not requesting an .html or .css file
+            transmit((STATUS_FORBIDDEN), sock)
+  
+        elif not os.path.isfile(path[1:]):                      #if URL corresponds to a path
+            transmit((STATUS_NOT_FOUND), sock)
+        
+            
         else:
-            transmit(STATUS_OK, sock)
-            transmit(CAT, sock)
+            with open(path[1:], 'r') as body:
+                main = body.read()
+            transmit(main, sock)
     else:
         transmit(STATUS_NOT_IMPLEMENTED, sock)        
-        transmit("\nI don't handle this request: {}\n".format(request), sock)
+        transmit("\nI don't handle this kind of request: {}\n".format(request), sock)
 
     sock.close()
-    return
+    return 
 
 def transmit(msg, sock):
     """It might take several sends to get the whole message out"""
@@ -132,5 +138,5 @@ def main():
     print("Listening on port {}".format(port))
     print("Socket is {}".format(sock))
     serve(sock, respond)
-
+    
 main()
