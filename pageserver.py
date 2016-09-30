@@ -11,7 +11,7 @@
   Contains 3 pages - home.html, trivia.html and colors.html.
   All three are barebones  but contain unique .css.
   
-  Usage: Request <ip address>/pages/FILE [html or css only]
+  Usage: Request <ip address>:8000/FILE [html or css only]
 
 """
 
@@ -87,12 +87,13 @@ def respond(sock):
         elif not any(x in path for x in ['.css','.html']):   #if URL is not requesting an .html or .css file
             transmit((STATUS_FORBIDDEN), sock)
   
-        elif not os.path.isfile(path[1:]):                      #if URL corresponds to a path
+        elif not os.path.isfile('.\\pages/' + path[1:]):                      #if URL corresponds to a path
+            print('.\\pages/' + path[1:])
             transmit((STATUS_NOT_FOUND), sock)
         
             
         else:
-            with open(path[1:], 'r') as body:
+            with open('.\\pages/' + path[1:], 'r') as body:
                 main = body.read()
             transmit(main, sock)
     else:
