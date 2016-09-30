@@ -1,0 +1,13 @@
+/* 
+ * Style sheet for the colors page. I wanted to do something fancy but don't have the css knowhow:
+   this will have to do for now.
+ */
+
+h1 { color: red;}
+h2 { color: orange;}
+h3 { color: yellow;}
+h4 { color: green;}
+h5 { color: blue;}
+h6 { color: indigo;}
+
+body { background-color: black; }
