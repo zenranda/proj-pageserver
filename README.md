@@ -3,7 +3,7 @@
 ###CS322 Project 1: Basic Web Server###
 ###Author: Marc Leppold###
 
-##Project Notes## 
+##Project Notes
 
 A modified version of the first project in CS322. A very basic web server in Python. Accepts incoming connections and serves them files depending on their query.
 Prevents queries which attempt to change the directory (ones containing "~", ".." or "//") and ones that request anything other than an html or css file.
