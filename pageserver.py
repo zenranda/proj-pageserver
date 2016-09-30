@@ -11,7 +11,7 @@
   Contains 3 pages - home.html, trivia.html and colors.html.
   All three are barebones  but contain unique .css.
   
-  Usage: Request <ip address>:8000/FILE [html or css only]
+  Usage: Request localhost:8000/FILE [html or css only]
 
 """
 

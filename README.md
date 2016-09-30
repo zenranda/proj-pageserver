@@ -9,7 +9,7 @@ A modified version of the first project in CS322. A very basic server in Python.
 Prevents queries which attempt to change the directory (ones containing "~", ".." or "//") and ones that request anything other than an html or css file.
 Hosts three .html files which each have their own .css files - home.html, trivia.html and colors.html. 
 
-All three have very basic functionality and serve as sample pages.
+All three have very basic functionality and serve as sample pages. Works over the local network only.
 
 ### USAGE ###
 
