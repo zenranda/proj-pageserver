@@ -79,7 +79,7 @@ def respond(sock):
     if len(parts) > 1 and parts[0] == "GET":
         transmit(STATUS_OK, sock)
 
-        path = parts[1]                                       #our page's path
+        path = parts[1]                                       #the request, includes our page's path
   
         if any(x in path for x in ['~','..','//']):           #if the URL contains banned characters
             transmit((STATUS_FORBIDDEN), sock)
