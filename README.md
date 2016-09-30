@@ -9,15 +9,15 @@ A modified version of the first project in CS322. A very basic server in Python.
 Prevents queries which attempt to change the directory (ones containing "~", ".." or "//") and ones that request anything other than an html or css file.
 Hosts three .html files which each have their own .css files - home.html, trivia.html and colors.html. 
 
-All three have very basic functionality and serve as sample pages. Currently works over the local network only.
+All three have very basic functionality and serve as sample pages. Currently works over the local network only. 
 
 ### USAGE ###
 
 Execute pageserver.py, then enter 
 ```
-localhost:8000/FILE
+localhost:PORT/FILE
 ```
-into an internet browser, where FILE matches an appropriate html or css file on the server.
+into an internet browser, where FILE matches an appropriate html or css file on the server and PORT matches the port the server is running on (default 8000).
 
 Can be executed via automated configure and makefile scripts as well:
 
