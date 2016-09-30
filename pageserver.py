@@ -19,7 +19,7 @@ import CONFIG    # Configuration options. Create by editing CONFIG.base.py
 import argparse  # Command line options (may override some configuration options)
 import socket    # Basic TCP/IP communication on the internet
 import _thread   # Response computation runs concurrently with main program 
-import os        # Needed for directory scanning.
+import os        # Needed for directory validation.
 
 def listen(portnum):
     """
@@ -81,17 +81,16 @@ def respond(sock):
 
         path = parts[1]                                       #our page's path
   
-        if any(x in path for x in ['~','..','//',]):         #if URL doesn't contain banned characters
+        if any(x in path for x in ['~','..','//']):          #if URL contains banned characters
             transmit((STATUS_FORBIDDEN), sock)
         
-        elif not any(x in path for x in ['.css','.html']):   #if URL is not requesting an .html or .css file
+        elif not any(x in path for x in ['.css','.html']):    #if the wrong kind of file is requested
             transmit((STATUS_FORBIDDEN), sock)
   
-        elif not os.path.isfile('.\\pages/' + path[1:]):                      #if URL corresponds to a path
+        elif not os.path.isfile('.\\pages/' + path[1:]):      #if URL doesn't correspond to a path
             print('.\\pages/' + path[1:])
             transmit((STATUS_NOT_FOUND), sock)
         
-            
         else:
             with open('.\\pages/' + path[1:], 'r') as body:
                 main = body.read()
