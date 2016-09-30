@@ -27,4 +27,4 @@ cd InstallDirectory
 make configure
 make run
 ```
-where InstallDirectory is the directory you clone the files to.
+where InstallDirectory is the directory you cloned the files to.
