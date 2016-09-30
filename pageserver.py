@@ -15,7 +15,7 @@
 
 """
 
-#import CONFIG    # Configuration options. Create by editing CONFIG.base.py
+import CONFIG    # Configuration options. Create by editing CONFIG.base.py
 import argparse  # Command line options (may override some configuration options)
 import socket    # Basic TCP/IP communication on the internet
 import _thread   # Response computation runs concurrently with main program 
